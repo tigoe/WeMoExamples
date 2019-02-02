@@ -70,4 +70,28 @@ And from a WeMo Insight, you'll get a response like this:
 </u:SetBinaryStateResponse>
 ````
 
+## Reading a WeMo Insight
+
+The WeMo Insight can give you a reading of its energy usage. To get this, you make a request for the `InsightParams` property, and you get a response with values in pipe-delimited form. Here's the POST request you'd make:
+
+````
+
+````
+
+And here's the curl command:
+
+````
+````
+
+The response looks like this:
+
+````
+````
+
+The pipe-delimited string inside the `<InsightParams>` tag is the data you want. Though Belkin doesn't publish what the parameters are anymore, they are listed on [this site]().. They are as follows:
+
+
+
+
+
 

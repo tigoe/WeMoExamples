@@ -66,6 +66,7 @@ void loop() {
   http.sendHeader("Content-Length", soap.length());
   http.endRequest();                      // end the request
   http.println(soap);                     // add the body
+  Serial.println(soap);
   Serial.println("request sent");
 
   while (http.connected()) {       // while connected to the server,
