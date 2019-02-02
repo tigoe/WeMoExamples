@@ -1,11 +1,15 @@
 /*
   WeMo HTTP Client
   Context: Arduino, with WINC1500 module
+
+  based on WeMo HTTP client from Making Things Talk, 3rd edition
+  by Tom Igoe 
 */
 // include required libraries and config files
 #include <SPI.h>
-#include <WiFi101.h>
-//#include <ESP8266WiFi.h>    // use this instead of WiFi101 for ESP8266 modules
+#include <WiFi101.h>          // use this for the MKR 1000
+//#include <WiFiNINA.h>       // use this for the MKR 1010
+//#include <ESP8266WiFi.h>    // use this for ESP8266 modules
 #include <ArduinoHttpClient.h>
 #include "arduino_secrets.h"
 
