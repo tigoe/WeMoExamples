@@ -113,3 +113,7 @@ The pipe-delimited string inside the `<InsightParams>` tag is the data you want.
 * standbyLimit - Minimum energy usage to register the insight as switched on ( milliwats, default 8000mW, configurable via WeMo App).
 
 You can see this in action in the [WemoInsightHttpClient](WemoInsightHttpClient/WemoInsightHttpClient.ino) example.
+
+## WeMo Light Bulbs
+
+...have been discontinued, but apparently Osram and Cree bulbs work with WeMo's hub, see [this announcement](http://community.wemo.com/t5/News-and-Announcements/A-note-about-Wemo-LED-products/td-p/33683). Although they can still be found on eBay and Amazon and other sites. 
