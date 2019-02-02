@@ -47,7 +47,6 @@ s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"> <s:Body><u:SetBinar
 ````
 By changing the value inside the `<BinaryState></BinaryState>` tag, you can switch the WeMo from off to on. You can see this in action in the [WemoHttpClient](WemoHttpClient/WemoHttpClient.ino) example. 
 
-
 From a WeMo Switch Mini, you'll get a response like this:
 
 ````
@@ -75,23 +74,42 @@ And from a WeMo Insight, you'll get a response like this:
 The WeMo Insight can give you a reading of its energy usage. To get this, you make a request for the `InsightParams` property, and you get a response with values in pipe-delimited form. Here's the POST request you'd make:
 
 ````
+POST /upnp/control/insight1 HTTP/1.1
+Host: 192.168.0.14:49153
+Content-type:text/xml;  charset=utf-8
+SOAPACTION:"urn:Belkin:service:insight:1#GetInsightParams"
+Content-Length: 271
 
+<?xml version="1.0" encoding="utf-8"?><s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"><s:Body><u:GetInsightParams xmlns:u="urn:Belkin:service:insight:1"></u:GetInsightParams></s:Body></s:Envelope>
 ````
 
 And here's the curl command:
 
 ````
+curl -H 'Content-type:text/xml;  charset=utf-8' -H 'SOAPACTION:"urn:Belkin:service:insight:1#GetInsightParams"' -d '<?xml version="1.0" encoding="utf-8"?><s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"><s:Body><u:GetInsightParams xmlns:u="urn:Belkin:service:insight:1"></u:GetInsightParams></s:Body></s:Envelope>' 'http://192.168.0.14:49153/upnp/control/insight1'
 ````
 
 The response looks like this:
 
 ````
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"><s:Body>
+<u:GetInsightParamsResponse xmlns:u="urn:Belkin:service:metainfo:1">
+<InsightParams>8|1549126755|0|0|0|9319|10|0|0|0.000000|7000</InsightParams>
+</u:GetInsightParamsResponse>
 ````
 
-The pipe-delimited string inside the `<InsightParams>` tag is the data you want. Though Belkin doesn't publish what the parameters are anymore, they are listed on [this site]().. They are as follows:
+The pipe-delimited string inside the `<InsightParams>` tag is the data you want. Though Belkin doesn't publish what the parameters are anymore, they are listed on [the Eclipse.org Smarthome site](https://www.eclipse.org/smarthome/documentation/features/bindings/wemo/readme.html). They are as follows:
 
+* state - Whether the switch is on or off (1 or 0).
+* lastChangedAt - The date and time when the WeMo was last turned on or off (a Unix timestamp)
+* lastOnFor - How long the Insight was last on for (seconds).
+* onToday -  How long the Insight has been on today (seconds)'
+* onTotal - How long the Insight has been on total (seconds).
+* timespan - Timespan over which onTotal is relevant (seconds). Typically 2 weeks except when first started up.
+* averagePower - Average power consumption (Watts).
+* currentPower - Current power consumption (milliwatts).
+* energyToday - Energy used today (Watt-hours, or Wh).
+* energyTotal - Energy used in total (Wh). This is the only parameter reported as a floating point value. 
+* standbyLimit - Minimum energy usage to register the insight as switched on ( milliwats, default 8000mW, configurable via WeMo App).
 
-
-
-
-
+You can see this in action in the [WemoInsightHttpClient](WemoInsightHttpClient/WemoInsightHttpClient.ino) example.
